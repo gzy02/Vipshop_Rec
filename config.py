@@ -1,18 +1,18 @@
 seed = 2023
 
-clk_score = 1
-like_score = 5
-addcart_score = 10
-order_score = 100
+clk_score = 0.001
+like_score = 0.01
+addcart_score = 0.05
+order_score = 1
 
-batch_size = 1024*32
+batch_size = 1024*1024
 
 # 训练
 epochs = 2000
-lr = 1e-2
-weight_decay = 1e-7
+lr = 1e-3
+weight_decay = 0
 
-user_dim = 64
+user_dim = 256
 cat_dim = 3
 brand_dim = 9
 item_dim = user_dim-cat_dim-brand_dim
