@@ -21,7 +21,7 @@ print("device:", device)
 # %% 初始化原始训练数据
 origin_train_data = DataSet(config.user_item_info_path, config.items_info_path)
 # %% 模型与优化器
-model = MFModel()
+model = MFModel(config.load_weight)
 if config.load_weight:
     model.load_state_dict(torch.load(config.load_path))
     print(f"Load model {config.load_path}")
