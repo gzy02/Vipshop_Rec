@@ -1,11 +1,11 @@
 seed = 2023
 
 clk_score = 0.001
-like_score = 0.01
-addcart_score = 0.05
-order_score = 1
+like_score = 0.005
+addcart_score = 0.01
+order_score = 0.1
 
-batch_size = 1024*1024
+batch_size = 1024*256
 
 # 训练
 epochs = 2000

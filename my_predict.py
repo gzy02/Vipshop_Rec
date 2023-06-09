@@ -6,9 +6,9 @@ from util import get_test_set
 topk = 10
 # batch_size = 1
 
-epoch = 350
-weight_decay = 1e-4
-lr = 0.01
+epoch = 10
+weight_decay = 0
+lr = 0.001
 
 load_path = f"./model/{epoch}_{config.user_dim}_{lr}_{weight_decay}.pth"
 submission_path = f'./submit/{epoch}_{config.user_dim}_{config.cat_dim}_{config.brand_dim}_{lr}_{weight_decay}.txt'
