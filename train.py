@@ -9,8 +9,8 @@ from SampleData import get_trainloader
 from DataSet import DataSet
 from SampleData import SampleData, get_trainloader
 # %% 打印全局超参数
-print_config()
 print("pid =", os.getpid())
+print_config()
 
 # %% 设置随机数种子
 setup_seed(config.seed)
