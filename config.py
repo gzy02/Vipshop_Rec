@@ -20,7 +20,7 @@ item_dim = user_dim-cat_dim-brand_dim
 # 测试
 topk = 20
 
-# 是否使用预训练好的模型
+# %% 是否使用预训练好的模型
 load_weight = False
 load_epoch = 30 if load_weight == True else 0
 load_path = f"./model/{load_epoch}_64_0.01_0.pth"

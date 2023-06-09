@@ -5,6 +5,30 @@ import numpy as np
 import random
 
 
+def print_config():
+    config_order = [
+        "seed",
+        "clk_score",
+        "like_score",
+        "addcart_score",
+        "order_score",
+        "batch_size",
+        "epochs",
+        "lr",
+        "weight_decay",
+        "user_dim",
+        "cat_dim",
+        "brand_dim",
+        "item_dim",
+        "topk"
+    ]
+
+    print("-------------------------------")
+    for name in config_order:
+        print(f"{name}: {getattr(config, name)}")
+    print("-------------------------------")
+
+
 def setup_seed(seed):
     np.random.seed(seed)
     random.seed(seed)
