@@ -51,4 +51,4 @@ class DataSet():
                 self.interact_set[user_id].add(item_id)
                 if order:
                     self.ordered_set[user_id].add(item_id)
-            self.users_degree[user_id]+=len(self.interact_set[user_id])
+            self.users_degree[user_id]+=len(self.ordered_set[user_id])

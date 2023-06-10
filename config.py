@@ -5,7 +5,7 @@ batch_size = 1024*2048
 # 训练
 epochs = 2000
 lr = 1e-3
-weight_decay = 0
+weight_decay = 1e-7
 
 user_dim = 256
 cat_dim = 8
@@ -13,7 +13,7 @@ brand_dim = 24
 item_dim = user_dim-cat_dim-brand_dim
 
 # 测试
-topk = 20
+topk = 10
 
 # %% 是否使用预训练好的模型
 load_weight = False
