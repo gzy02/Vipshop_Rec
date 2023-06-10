@@ -36,5 +36,19 @@ class DataSet():
         self.items_cat_num: int = config.items_cat_num
         self.items_brand_num: int = config.items_brand_num
 
-        # self.items_degree: List[int] = [0] * self.items_num  # 物品热门度
-        # self.users_degree: List[int] = [0] * self.users_num  # 用户交互数
+        self.items_degree: List[int] = [0] * self.items_num  # 物品热门度
+        self.users_degree: List[int] = [0] * self.users_num  # 用户交互数
+        self.ordered_set:List[Set[int]]=[set() for _ in range(self.users_num)]
+        self.interact_set:List[Set[int]]=[set() for _ in range(self.users_num)]
+        for user_id, user_history in enumerate(self.user_item_info):
+            for seq in user_history:
+                item_id = seq[0]
+                self.items_degree[item_id]+=1
+                clk=seq[1]
+                like=seq[2]
+                addcart=seq[3]
+                order=seq[4]
+                self.interact_set[user_id].add(item_id)
+                if order:
+                    self.ordered_set[user_id].add(item_id)
+            self.users_degree[user_id]+=len(self.interact_set[user_id])

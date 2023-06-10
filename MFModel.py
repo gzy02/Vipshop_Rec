@@ -21,31 +21,27 @@ class MFModel(torch.nn.Module):
             self.items_cat_num, self.cat_dim)
         self.item_brand_embedding = torch.nn.Embedding(
             self.items_brand_num, self.brand_dim)
-        self.user_bias_embedding = nn.Embedding(config.users_num, 1)
-        self.item_bias_embedding = nn.Embedding(config.items_num, 1)
-        self.global_bias = nn.Parameter(torch.tensor(1.0))
         if load_model == False:
             nn.init.xavier_uniform_(self.user_embedding.weight, gain=1)
             nn.init.xavier_uniform_(self.item_embedding.weight, gain=1)
             nn.init.xavier_uniform_(self.item_cat_embedding.weight, gain=1)
             nn.init.xavier_uniform_(self.item_brand_embedding.weight, gain=1)
-            nn.init.xavier_uniform_(self.user_bias_embedding.weight, gain=1)
-            nn.init.xavier_uniform_(self.item_bias_embedding.weight, gain=1)
             print('use xavier initilizer')
 
-    def forward(self, user, item, item_cat, item_brand):
+    def bpr_loss(self, user, item, item_cat, item_brand,neg_item,neg_item_cat,neg_item_brand):
         self.train()
         user_embedding = self.user_embedding(user)
         item_embedding = torch.concat((self.item_embedding(item), self.item_cat_embedding(
             item_cat), self.item_brand_embedding(item_brand)), dim=1)
-        item_bias = self.item_bias_embedding(item).squeeze()
-        user_bias = self.user_bias_embedding(user).squeeze()
-        dot = torch.sum(torch.mul(user_embedding, item_embedding), dim=1)
-        y_ = dot+self.global_bias+item_bias+user_bias
-        L2Loss = torch.norm(user_embedding)**2 + torch.norm(item_embedding)**2
-        return y_, L2Loss/user.shape[0]/2
-        # MSELoss = nn.MSELoss()(y_, rating)
-        # return MSELoss, L2Loss/user.shape[0]/2
+        
+        neg_item_embedding = torch.concat((self.item_embedding(neg_item), self.item_cat_embedding(
+            neg_item_cat), self.item_brand_embedding(neg_item_brand)), dim=1)
+ 
+        pos_scores = torch.sum(torch.mul(user_embedding, item_embedding), dim=1)
+        neg_scores = torch.sum(torch.mul(user_embedding, neg_item_embedding), dim=1)
+        
+        loss = torch.mean(torch.nn.functional.softplus(neg_scores - pos_scores))
+        return loss
 
     def getUsersRating(self, user, item, item_cat, item_brand):
         self.eval()
@@ -53,7 +49,5 @@ class MFModel(torch.nn.Module):
             user_embedding = self.user_embedding(user)
             item_embedding = torch.concat((self.item_embedding(item), self.item_cat_embedding(
                 item_cat), self.item_brand_embedding(item_brand)), dim=1)
-            item_bias = self.item_bias_embedding(item).squeeze()
-            user_bias = self.user_bias_embedding(user).squeeze()
             dot = torch.sum(torch.mul(user_embedding, item_embedding), dim=1)
-        return dot+self.global_bias+item_bias+user_bias
+        return dot

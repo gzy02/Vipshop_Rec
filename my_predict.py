@@ -6,7 +6,7 @@ from util import get_test_set
 topk = 20
 # batch_size = 1
 
-epoch = 10
+epoch = 200
 weight_decay =0
 lr = 0.001
 

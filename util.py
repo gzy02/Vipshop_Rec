@@ -8,10 +8,6 @@ import random
 def print_config():
     config_order = [
         "seed",
-        "clk_score",
-        "like_score",
-        "addcart_score",
-        "order_score",
         "batch_size",
         "epochs",
         "lr",
