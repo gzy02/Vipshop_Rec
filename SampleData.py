@@ -20,7 +20,7 @@ class SampleData(Dataset):
                     seq[1]+config.like_score*seq[2]+config.addcart_score * \
                     seq[3]+config.order_score*seq[4]
                 self.Xs.append(
-                    (user_id, item_id, self.items_info[user_id][0], self.items_info[user_id][1], rating))
+                    (user_id, item_id, self.items_info[item_id][0], self.items_info[item_id][1], rating))
 
     def __getitem__(self, index):
         # user_id, item_id, item_cat, item_brand, rating

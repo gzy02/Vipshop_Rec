@@ -3,11 +3,11 @@ from DataSet import DataSet
 from MFModel import MFModel
 import config
 from util import get_test_set
-topk = 10
+topk = 20
 # batch_size = 1
 
 epoch = 10
-weight_decay = 0
+weight_decay =0
 lr = 0.001
 
 load_path = f"./model/{epoch}_{config.user_dim}_{lr}_{weight_decay}.pth"

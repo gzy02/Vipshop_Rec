@@ -38,7 +38,7 @@ for epoch in range(1+config.load_epoch, config.epochs+config.load_epoch+1):
         user, item, item_cat, item_brand, rating = data
         y_, reg_loss = model(user.to(device), item.to(device), item_cat.to(device),
                              item_brand.to(device))
-        loss = loss_fn(y_, rating.to(device)) + \
+        loss = loss_fn(y_, rating.float().to(device)) + \
             reg_loss*config.weight_decay
         optimizer.zero_grad()
         loss.backward()
