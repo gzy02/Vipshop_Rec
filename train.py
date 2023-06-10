@@ -28,7 +28,7 @@ if config.load_weight:
 model = model.to(device)
 loss_fn = torch.nn.MSELoss()
 optimizer = torch.optim.Adam(
-    model.parameters(), lr=config.lr, weight_decay=0)
+    model.parameters(), lr=config.lr, weight_decay=config.weight_decay)
 # optimizer = torch.optim.SGD(model.parameters(), lr=config.lr)
 # %% 训练
 train_loader = get_trainloader(origin_train_data)
@@ -36,10 +36,9 @@ for epoch in range(1+config.load_epoch, config.epochs+config.load_epoch+1):
     losses = []
     for data in train_loader:
         user, item, item_cat, item_brand, rating = data
-        y_, reg_loss = model(user.to(device), item.to(device), item_cat.to(device),
-                             item_brand.to(device))
-        loss = loss_fn(y_, rating.float().to(device)) + \
-            reg_loss*config.weight_decay
+        y_ = model(user.to(device), item.to(device), item_cat.to(device),
+                   item_brand.to(device))
+        loss = loss_fn(y_, rating.float().to(device))
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()

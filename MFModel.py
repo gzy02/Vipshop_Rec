@@ -42,6 +42,7 @@ class MFModel(torch.nn.Module):
         user_bias = self.user_bias_embedding(user).squeeze()
         dot = torch.sum(torch.mul(user_embedding, item_embedding), dim=1)
         y_ = dot+self.global_bias+item_bias+user_bias
+        return y_
         L2Loss = torch.norm(user_embedding)**2 + torch.norm(item_embedding)**2
         return y_, L2Loss/user.shape[0]/2
         # MSELoss = nn.MSELoss()(y_, rating)
