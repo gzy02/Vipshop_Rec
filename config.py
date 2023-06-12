@@ -4,7 +4,7 @@ like_score = 1.0
 addcart_score = 5.0
 order_score = 10.0
 
-batch_size = 1024*1024*4
+batch_size = 1024*1024*2
 
 # 训练
 epochs = 2000
