@@ -4,11 +4,11 @@ like_score = 1.0
 addcart_score = 5.0
 order_score = 10.0
 
-batch_size = 1024*1024*2
+batch_size = 1024*1024*4
 
 # 训练
 epochs = 2000
-lr = 1e-3
+lr = 1e-2
 weight_decay = 1e-7
 
 user_dim = 256
