@@ -3,11 +3,11 @@ from DataSet import DataSet
 from MFModel import MFModel
 import config
 from util import get_test_set
-topk = 20
+topk = 1
 # batch_size = 1
 
-epoch = 10
-weight_decay = 1e-4
+epoch = 30
+weight_decay = 1e-8
 lr = 0.001
 
 load_path = f"./model/{epoch}_{config.user_dim}_{lr}_{weight_decay}.pth"
@@ -40,7 +40,7 @@ with torch.no_grad():
             rating = model.getUsersRating(
                 torch.LongTensor([user_id]).to(device), item_for_test_gpu, item_cat_for_test_gpu, item_brand_for_test_gpu)
             _, topk_indices = torch.topk(
-                rating, k=topk)  # 降序排列的top-k个待推荐物品矩阵
+                rating, k=max(topk, origin_train_data.users_degree[user_id]))  # 降序排列的top-k个待推荐物品矩阵
             rec_list = topk_indices.tolist()  # 模型的推荐列表
             for item_index in rec_list:
                 item_id = item_for_test[item_index]
