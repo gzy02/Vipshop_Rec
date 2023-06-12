@@ -28,7 +28,7 @@ class MFModel(torch.nn.Module):
             nn.init.xavier_uniform_(self.item_brand_embedding.weight, gain=1)
             print('use xavier initilizer')
 
-    def bpr_loss(self, user, item, item_cat, item_brand,neg_item,neg_item_cat,neg_item_brand):
+    def bpr_loss(self, user, item, item_cat, item_brand,neg_item,neg_item_cat,neg_item_brand,score):
         self.train()
         user_embedding = self.user_embedding(user)
         item_embedding = torch.concat((self.item_embedding(item), self.item_cat_embedding(
@@ -40,7 +40,7 @@ class MFModel(torch.nn.Module):
         pos_scores = torch.sum(torch.mul(user_embedding, item_embedding), dim=1)
         neg_scores = torch.sum(torch.mul(user_embedding, neg_item_embedding), dim=1)
         
-        loss = torch.mean(torch.nn.functional.softplus(neg_scores - pos_scores))
+        loss = torch.mean(torch.mul(score,torch.nn.functional.softplus(neg_scores - pos_scores)))
         return loss
 
     def getUsersRating(self, user, item, item_cat, item_brand):

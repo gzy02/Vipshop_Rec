@@ -26,7 +26,6 @@ if config.load_weight:
     model.load_state_dict(torch.load(config.load_path))
     print(f"Load model {config.load_path}")
 model = model.to(device)
-loss_fn = torch.nn.MSELoss()
 optimizer = torch.optim.Adam(
     model.parameters(), lr=config.lr, weight_decay=config.weight_decay)
 # optimizer = torch.optim.SGD(model.parameters(), lr=config.lr)
@@ -35,9 +34,9 @@ for epoch in range(1+config.load_epoch, config.epochs+config.load_epoch+1):
     losses = []
     train_loader = get_trainloader(origin_train_data,config.batch_size)
     for data in train_loader:
-        user, item, item_cat, item_brand, pos_item,pos_item_cat,pos_item_brand = data
-        loss = model.bpr_loss(user.to(device), item.to(device), item_cat.to(device), item_brand.to(device),pos_item.to(device),pos_item_cat.to(device),pos_item_brand.to(device))
-
+        user, item, item_cat, item_brand, pos_item,pos_item_cat,pos_item_brand,score = data
+        loss = model.bpr_loss(user.to(device), item.to(device), item_cat.to(device), item_brand.to(device),pos_item.to(device),pos_item_cat.to(device),pos_item_brand.to(device),score.to(device))
+        
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()

@@ -3,7 +3,7 @@ from DataSet import DataSet
 from MFModel import MFModel
 import config
 from util import get_test_set
-# topk = 20
+topk = 1
 # batch_size = 1
 
 epoch = 200
@@ -28,7 +28,9 @@ item_cat_for_test = list(
     map(lambda x: origin_train_data.items_info[x][0], item_for_test))
 item_brand_for_test = list(
     map(lambda x: origin_train_data.items_info[x][1], item_for_test))
-
+idx=dict()
+for index,item_id in enumerate(item_for_test):
+    idx[item_id]=index
 item_for_test_gpu = torch.LongTensor(item_for_test).to(device)
 item_cat_for_test_gpu = torch.LongTensor(item_cat_for_test).to(device)
 item_brand_for_test_gpu = torch.LongTensor(item_brand_for_test).to(device)
@@ -39,8 +41,12 @@ with torch.no_grad():
         for user_id in user_for_test:
             rating = model.getUsersRating(
                 torch.LongTensor([user_id]).to(device), item_for_test_gpu, item_cat_for_test_gpu, item_brand_for_test_gpu)
+            for item_info in origin_train_data.user_item_info[user_id]:
+                item_id=item_info[0]
+                if item_id in idx:
+                    rating[idx[item_id]]=-10000000
             _, topk_indices = torch.topk(
-                rating, k=origin_train_data.users_degree[user_id])  # 降序排列的top-k个待推荐物品矩阵
+                rating, origin_train_data.users_degree[user_id])  # 降序排列的top-k个待推荐物品矩阵
             rec_list = topk_indices.tolist()  # 模型的推荐列表
             for item_index in rec_list:
                 item_id = item_for_test[item_index]

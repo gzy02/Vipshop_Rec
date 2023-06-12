@@ -1,4 +1,8 @@
 seed = 2023
+clk_score = 0.01
+like_score = 0.1
+addcart_score = 0.5
+order_score = 1.0
 
 batch_size = 1024*2048
 

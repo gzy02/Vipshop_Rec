@@ -39,6 +39,9 @@ class DataSet():
         self.items_degree: List[int] = [0] * self.items_num  # 物品热门度
         self.users_degree: List[int] = [0] * self.users_num  # 用户交互数
         self.ordered_set:List[Set[int]]=[set() for _ in range(self.users_num)]
+        self.like_set:List[Set[int]]=[set() for _ in range(self.users_num)]
+        self.addcart_set:List[Set[int]]=[set() for _ in range(self.users_num)]
+        self.clk_set:List[Set[int]]=[set() for _ in range(self.users_num)]
         self.interact_set:List[Set[int]]=[set() for _ in range(self.users_num)]
         for user_id, user_history in enumerate(self.user_item_info):
             for seq in user_history:
@@ -51,4 +54,10 @@ class DataSet():
                 self.interact_set[user_id].add(item_id)
                 if order:
                     self.ordered_set[user_id].add(item_id)
+                if clk:
+                    self.clk_set[user_id].add(item_id)
+                if like:
+                    self.like_set[user_id].add(item_id)
+                if addcart:
+                    self.addcart_set[user_id].add(item_id)
             self.users_degree[user_id]+=len(self.ordered_set[user_id])
